@@ -5,31 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kids Activity Hub - MagicPebbles</title>
     <style>
-        body { font-family: 'Arial', sans-serif; background-color: #ffeef8; margin: 0; padding: 0; text-align: center; color: #333; }
+        body { font-family: 'Arial', sans-serif; background-color: #ffeef8; margin: 0; padding: 0; text-align: center; color: #333; -webkit-user-select: none; user-select: none; }
         header { background: linear-gradient(135deg, #ff6b6b, #ff8e53); color: white; padding: 20px; font-size: 24px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; }
         
-        /* App Download Banner */
         .app-banner { background: #6c5ce7; color: white; padding: 15px; margin: 15px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
         .download-btn { background: #fdcb6e; color: #2d3436; padding: 10px 25px; border: none; font-size: 18px; font-weight: bold; border-radius: 25px; cursor: pointer; text-decoration: none; display: inline-block; margin-top: 10px; }
-        .download-btn:hover { background: #ffeaa7; }
 
         .section { background: white; margin: 20px; padding: 20px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         h2 { color: #ff6b6b; border-bottom: 3px dashed #ff8e53; padding-bottom: 5px; display: inline-block; }
         
-        /* Letters & Numbers Styling */
-        .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 15px; }
-        .card { width: 50px; height: 50px; background: #a29bfe; color: white; font-size: 24px; font-weight: bold; display: flex; align-items: center; justify-content: center; border-radius: 10px; border-bottom: 4px solid #6c5ce7; }
-        .num-card { background: #fab1a0; border-bottom: 4px solid #e17055; }
+        .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 15px; }
+        
+        .card { width: 85px; height: 110px; background: #a29bfe; color: white; border-radius: 12px; border-bottom: 5px solid #6c5ce7; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.1s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .card:active { transform: scale(0.9); }
+        .card .letter-text { font-size: 30px; font-weight: bold; }
+        .card .emoji-pic { font-size: 26px; margin-top: 4px; }
+        
+        .num-card { background: #fab1a0; border-bottom: 5px solid #e17055; width: 95px; }
 
-        /* Drawing Pad Styling */
-        canvas { background: #fff; border: 3px solid #ff7675; border-radius: 10px; cursor: crosshair; touch-action: none; }
-        .clear-btn { background: #ff7675; color: white; padding: 8px 20px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; margin-top: 10px; }
-
-        /* Video / Poetry Layout */
-        .video-container { max-width: 560px; margin: 0 auto; position: relative; padding-bottom: 56.25%; height: 0; display: none; border-radius: 10px; overflow: hidden; }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        .play-btn { background: #00b894; color: white; padding: 12px 30px; font-size: 18px; font-weight: bold; border: none; border-radius: 25px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .play-btn:hover { background: #55efc4; }
+        /* Coloring Styling */
+        .color-palette { margin: 15px 0; display: flex; justify-content: center; gap: 12px; }
+        .color-box { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; border: 3px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .color-box.active { border: 3px solid #333; transform: scale(1.1); }
+        canvas { background: #fff; border: 3px solid #ff7675; border-radius: 15px; cursor: crosshair; touch-action: none; box-shadow: inset 0 0 10px rgba(0,0,0,0.05); }
+        .clear-btn { background: #ff7675; color: white; padding: 10px 22px; border: none; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 3px 5px rgba(0,0,0,0.1); }
+        
+        /* Video Container Inside Page */
+        .video-wrapper { max-width: 480px; margin: 15px auto; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.15); display: none; position: relative; padding-bottom: 56.25%; height: 0; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        .play-btn { background: #00b894; color: white; padding: 14px 35px; font-size: 18px; font-weight: bold; border: none; border-radius: 35px; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
@@ -38,116 +42,71 @@
         <h1>Welcome to Kids Activity Hub! 🎈</h1>
     </header>
 
-    <!-- 1. MagicPebbles App Section -->
+    <!-- App Launch Section -->
     <div class="app-banner">
         <h3>🎉 खुशख़बरी! हमारा नया एंड्रॉइड ऐप आ गया है! 🎉</h3>
-        <p>अपने मोबाइल पर बिना इंटरनेट बच्चों की कविताएँ और ड्राइंग चलाने के लिए अभी डाउनलोड करें.</p>
+        <p>बिना इंटरनेट बच्चों की कविताएँ, आवाज़ और कलरिंग बुक चलाने के लिए अभी डाउनलोड करें.</p>
         <a href="#" class="download-btn" onclick="alert('MagicPebbles App फ़ाइल जल्द ही यहाँ लोड होगी!')">📲 डाउनलोड करें "MagicPebbles" ऐप (FREE)</a>
     </div>
 
-    <!-- 2. Letters Section (A-Z) -->
+    <!-- Letters Section (A to Z) -->
     <div class="section">
         <h2>🔤 Letters (A to Z)</h2>
+        <p style="color: #666; font-size: 14px; font-weight: bold;">(अक्षर छुओ, आवाज़ सुनो और नीचे आउटलाइन में रंग भरो! 🔊🖌️)</p>
         <div class="grid">
-            <div class="card">A</div><div class="card">B</div><div class="card">C</div><div class="card">D</div><div class="card">E</div>
-            <div class="card">F</div><div class="card">G</div><div class="card">H</div><div class="card">I</div><div class="card">J</div>
-            <div class="card">K</div><div class="card">L</div><div class="card">M</div><div class="card">N</div><div class="card">O</div>
-            <div class="card">P</div><div class="card">Q</div><div class="card">R</div><div class="card">S</div><div class="card">T</div>
-            <div class="card">U</div><div class="card">V</div><div class="card">W</div><div class="card">X</div><div class="card">Y</div><div class="card">Z</div>
+            <div class="card" onclick="selectLetter('A', 'Apple 🍎')"><span class="letter-text">A</span><span class="emoji-pic">🍎</span></div>
+            <div class="card" onclick="selectLetter('B', 'Ball ⚽')"><span class="letter-text">B</span><span class="emoji-pic">⚽</span></div>
+            <div class="card" onclick="selectLetter('C', 'Cat 🐱')"><span class="letter-text">C</span><span class="emoji-pic">🐱</span></div>
+            <div class="card" onclick="selectLetter('D', 'Dog 🐶')"><span class="letter-text">D</span><span class="emoji-pic">🐶</span></div>
+            <div class="card" onclick="selectLetter('E', 'Elephant 🐘')"><span class="letter-text">E</span><span class="emoji-pic">🐘</span></div>
+            <div class="card" onclick="selectLetter('F', 'Fish 🐟')"><span class="letter-text">F</span><span class="emoji-pic">🐟</span></div>
+            <div class="card" onclick="selectLetter('G', 'Grapes 🍇')"><span class="letter-text">G</span><span class="emoji-pic">🍇</span></div>
+            <div class="card" onclick="selectLetter('H', 'Horse 🐴')"><span class="letter-text">H</span><span class="emoji-pic">🐴</span></div>
+            <div class="card" onclick="selectLetter('I', 'IceCream 🍦')"><span class="letter-text">I</span><span class="emoji-pic">🍦</span></div>
+            <div class="card" onclick="selectLetter('J', 'Jug 🏺')"><span class="letter-text">J</span><span class="emoji-pic">🏺</span></div>
+            <div class="card" onclick="selectLetter('K', 'Kite 🪁')"><span class="letter-text">K</span><span class="emoji-pic">🪁</span></div>
+            <div class="card" onclick="selectLetter('L', 'Lion 🦁')"><span class="letter-text">L</span><span class="emoji-pic">🦁</span></div>
+            <div class="card" onclick="selectLetter('M', 'Monkey 🐒')"><span class="letter-text">M</span><span class="emoji-pic">🐒</span></div>
+            <div class="card" onclick="selectLetter('N', 'Nest 🪹')"><span class="letter-text">N</span><span class="emoji-pic">🪹</span></div>
+            <div class="card" onclick="selectLetter('O', 'Orange 🍊')"><span class="letter-text">O</span><span class="emoji-pic">🍊</span></div>
+            <div class="card" onclick="selectLetter('P', 'Parrot 🦜')"><span class="letter-text">P</span><span class="emoji-pic">🦜</span></div>
+            <div class="card" onclick="selectLetter('Q', 'Queen 👑')"><span class="letter-text">Q</span><span class="emoji-pic">👑</span></div>
+            <div class="card" onclick="selectLetter('R', 'Rose 🌹')"><span class="letter-text">R</span><span class="emoji-pic">🌹</span></div>
+            <div class="card" onclick="selectLetter('S', 'Sun ☀️')"><span class="letter-text">S</span><span class="emoji-pic">☀️</span></div>
+            <div class="card" onclick="selectLetter('T', 'Tiger 🐯')"><span class="letter-text">T</span><span class="emoji-pic">🐯</span></div>
+            <div class="card" onclick="selectLetter('U', 'Umbrella ☂️')"><span class="letter-text">U</span><span class="emoji-pic">☂️</span></div>
+            <div class="card" onclick="selectLetter('V', 'Van 🚐')"><span class="letter-text">V</span><span class="emoji-pic">🚐</span></div>
+            <div class="card" onclick="selectLetter('W', 'Watch ⌚')"><span class="letter-text">W</span><span class="emoji-pic">⌚</span></div>
+            <div class="card" onclick="selectLetter('X', 'Xylophone 🎹')"><span class="letter-text">X</span><span class="emoji-pic">🎹</span></div>
+            <div class="card" onclick="selectLetter('Y', 'Yak 🐂')"><span class="letter-text">Y</span><span class="emoji-pic">🐂</span></div>
+            <div class="card" onclick="selectLetter('Z', 'Zebra 🦓')"><span class="letter-text">Z</span><span class="emoji-pic">🦓</span></div>
         </div>
     </div>
 
-    <!-- 3. Numbers Section (1-10) -->
+    <!-- Numbers Section (1 to 10) -->
     <div class="section">
         <h2>🔢 Numbers (1 to 10)</h2>
         <div class="grid">
-            <div class="num-card card">1</div><div class="num-card card">2</div><div class="num-card card">3</div>
-            <div class="num-card card">4</div><div class="num-card card">5</div><div class="num-card card">6</div>
-            <div class="num-card card">7</div><div class="num-card card">8</div><div class="num-card card">9</div>
-            <div class="num-card card">10</div>
+            <div class="num-card card" onclick="speakText('One')"><span class="letter-text">1</span><span class="emoji-pic">🎈</span></div>
+            <div class="num-card card" onclick="speakText('Two')"><span class="letter-text">2</span><span class="emoji-pic">🎈🎈</span></div>
+            <div class="num-card card" onclick="speakText('Three')"><span class="letter-text">3</span><span class="emoji-pic">⭐⭐⭐</span></div>
+            <div class="num-card card" onclick="speakText('Four')"><span class="letter-text">4</span><span class="emoji-pic">🍀🍀🍀🍀</span></div>
+            <div class="num-card card" onclick="speakText('Five')"><span class="letter-text">5</span><span class="emoji-pic">🍬🍬🍬🍬🍬</span></div>
+            <div class="num-card card" onclick="speakText('Six')"><span class="letter-text">6</span><span class="emoji-pic">🍎🍎🍎🍎🍎🍎</span></div>
+            <div class="num-card card" onclick="speakText('Seven')"><span class="letter-text">7</span><span class="emoji-pic">🌟🌟🌟🌟🌟🌟🌟</span></div>
+            <div class="num-card card" onclick="speakText('Eight')"><span class="letter-text">8</span><span class="emoji-pic">⚽⚽⚽⚽⚽⚽⚽⚽</span></div>
+            <div class="num-card card" onclick="speakText('Nine')"><span class="letter-text">9</span><span class="emoji-pic">🦋🦋🦋🦋🦋🦋🦋🦋🦋</span></div>
+            <div class="num-card card" onclick="speakText('Ten')"><span class="letter-text">10</span><span class="emoji-pic">🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉</span></div>
         </div>
     </div>
 
-    <!-- 4. Drawing Section -->
+    <!-- Outlined Coloring Sheet Section -->
     <div class="section">
-        <h2>🎨 Drawing & Coloring Board</h2>
-        <p>बच्चे यहाँ उंगली से मनपसंद चित्र बना सकते हैं:</p>
-        <canvas id="paintCanvas" width="320" height="250"></canvas>
-        <br>
-        <button class="clear-btn" onclick="clearCanvas()">बोर्ड साफ़ करें (Clear)</button>
-    </div>
-
-    <!-- 5. Poetry Section -->
-    <div class="section">
-        <h2>🎬 बच्चों की प्यारी कविता (Poetry Video)</h2>
-        <p>नीचे दिए गए बटन को दबाकर मज़ेदार कविता देखें:</p>
+        <h2>🎨 Magic Outline Coloring Book (A to Z)</h2>
+        <h3 id="currentOutlineTitle" style="color: #6c5ce7; font-size: 22px;">🍎 Apple Outline (A)</h3>
         
-        <button class="play-btn" id="startVideoBtn" onclick="showPoetryVideo()">▶ कविता चालू करें (Play Video)</button>
-        
-        <div class="video-container" id="videoBox">
-            <iframe id="youtubePlayer" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-    </div>
+        <div class="color-palette">
+            <div class="color-box active" style="background: #ff7675;" onclick="changeColor('#ff7675', this)"></div>
+            <div class="color-box" style="background: #74b9ff;" onclick="changeColor('#74b9ff', this)"></div>
 
-    <script>
-        function showPoetryVideo() {
-            var videoBox = document.getElementById('videoBox');
-            var player = document.getElementById('youtubePlayer');
-            var playBtn = document.getElementById('startVideoBtn');
             
-            player.src = "https://youtube.com"; 
-            videoBox.style.display = "block"; 
-            playBtn.style.display = "none"; 
-        }
-
-        const canvas = document.getElementById('paintCanvas');
-        const ctx = canvas.getContext('2d');
-        let drawing = false;
-
-        ctx.lineWidth = 5;
-        ctx.lineCap = 'round';
-        ctx.strokeStyle = '#ff7675';
-
-        function getEventPos(e) {
-            let clientX, clientY;
-            if (e.touches && e.touches.length > 0) {
-                clientX = e.touches[0].clientX;
-                clientY = e.touches[0].clientY;
-            } else {
-                clientX = e.clientX;
-                clientY = e.clientY;
-            }
-            let rect = canvas.getBoundingClientRect();
-            return { x: clientX - rect.left, y: clientY - rect.top };
-        }
-
-        function startPosition(e) { 
-            drawing = true; 
-            let pos = getEventPos(e);
-            ctx.beginPath();
-            ctx.moveTo(pos.x, pos.y);
-            e.preventDefault();
-        }
-        
-        function finishedPosition() { drawing = false; ctx.beginPath(); }
-        
-        function draw(e) {
-            if (!drawing) return;
-            let pos = getEventPos(e);
-            ctx.lineTo(pos.x, pos.y);
-            ctx.stroke();
-            e.preventDefault();
-        }
-
-        canvas.addEventListener('mousedown', startPosition);
-        canvas.addEventListener('mouseup', finishedPosition);
-        canvas.addEventListener('mousemove', draw);
-        
-        canvas.addEventListener('touchstart', startPosition, {passive: false});
-        canvas.addEventListener('touchend', finishedPosition);
-        canvas.addEventListener('touchmove', draw, {passive: false});
-
-        function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
-    </script>
-</body>
-</html>

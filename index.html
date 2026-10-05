@@ -19,9 +19,9 @@
         .card { width: 85px; height: 110px; background: #a29bfe; color: white; border-radius: 12px; border-bottom: 5px solid #6c5ce7; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.1s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .card:active { transform: scale(0.9); }
         .card .letter-text { font-size: 30px; font-weight: bold; }
-        .card .emoji-pic { font-size: 26px; margin-top: 4px; }
+        .card .emoji-pic { font-size: 26px; margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 80px; }
         
-        .num-card { background: #fab1a0; border-bottom: 5px solid #e17055; width: 95px; }
+        .num-card { background: #fab1a0; border-bottom: 5px solid #e17055; width: 95px; height: 120px; }
 
         /* Coloring Styling */
         .color-palette { margin: 15px 0; display: flex; justify-content: center; gap: 12px; }
@@ -30,9 +30,8 @@
         canvas { background: #fff; border: 3px solid #ff7675; border-radius: 15px; cursor: crosshair; touch-action: none; box-shadow: inset 0 0 10px rgba(0,0,0,0.05); }
         .clear-btn { background: #ff7675; color: white; padding: 10px 22px; border: none; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 3px 5px rgba(0,0,0,0.1); }
         
-        /* Video Container Inside Page */
-        .video-wrapper { max-width: 480px; margin: 15px auto; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.15); display: none; position: relative; padding-bottom: 56.25%; height: 0; }
-        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        /* Fixed Video Container Placement */
+        .video-section { margin-top: 30px; padding-top: 10px; }
         .play-btn { background: #00b894; color: white; padding: 14px 35px; font-size: 18px; font-weight: bold; border: none; border-radius: 35px; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
     </style>
 </head>
@@ -46,11 +45,11 @@
     <div class="app-banner">
         <h3>🎉 खुशख़बरी! हमारा नया एंड्रॉइड ऐप आ गया है! 🎉</h3>
         <p>बिना इंटरनेट बच्चों की कविताएँ, आवाज़ और कलरिंग बुक चलाने के लिए अभी डाउनलोड करें.</p>
-        <a href="#" class="download-btn" onclick="alert('MagicPebbles App फ़ाइल जल्द ही यहाँ लोड होगी!')">📲 डाउनलोड करें "MagicPebbles" ऐप (FREE)</a>
+        <a href="#" class="download-btn" onclick="initAudio(); alert('MagicPebbles App फ़ाइल जल्द ही यहाँ लोड होगी!')">📲 डाउनलोड करें "MagicPebbles" ऐप (FREE)</a>
     </div>
 
     <!-- Letters Section (A to Z) -->
-    <div class="section">
+    <div class="section" onclick="initAudio()">
         <h2>🔤 Letters (A to Z)</h2>
         <p style="color: #666; font-size: 14px; font-weight: bold;">(अक्षर छुओ, आवाज़ सुनो और नीचे आउटलाइन में रंग भरो! 🔊🖌️)</p>
         <div class="grid">
@@ -84,19 +83,19 @@
     </div>
 
     <!-- Numbers Section (1 to 10) -->
-    <div class="section">
+    <div class="section" onclick="initAudio()">
         <h2>🔢 Numbers (1 to 10)</h2>
         <div class="grid">
             <div class="num-card card" onclick="speakText('One')"><span class="letter-text">1</span><span class="emoji-pic">🎈</span></div>
             <div class="num-card card" onclick="speakText('Two')"><span class="letter-text">2</span><span class="emoji-pic">🎈🎈</span></div>
             <div class="num-card card" onclick="speakText('Three')"><span class="letter-text">3</span><span class="emoji-pic">⭐⭐⭐</span></div>
-            <div class="num-card card" onclick="speakText('Four')"><span class="letter-text">4</span><span class="emoji-pic">🍀🍀🍀🍀</span></div>
-            <div class="num-card card" onclick="speakText('Five')"><span class="letter-text">5</span><span class="emoji-pic">🍬🍬🍬🍬🍬</span></div>
-            <div class="num-card card" onclick="speakText('Six')"><span class="letter-text">6</span><span class="emoji-pic">🍎🍎🍎🍎🍎🍎</span></div>
-            <div class="num-card card" onclick="speakText('Seven')"><span class="letter-text">7</span><span class="emoji-pic">🌟🌟🌟🌟🌟🌟🌟</span></div>
-            <div class="num-card card" onclick="speakText('Eight')"><span class="letter-text">8</span><span class="emoji-pic">⚽⚽⚽⚽⚽⚽⚽⚽</span></div>
-            <div class="num-card card" onclick="speakText('Nine')"><span class="letter-text">9</span><span class="emoji-pic">🦋🦋🦋🦋🦋🦋🦋🦋🦋</span></div>
-            <div class="num-card card" onclick="speakText('Ten')"><span class="letter-text">10</span><span class="emoji-pic">🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉</span></div>
+            <div class="num-card card" onclick="speakText('Four')"><span class="letter-text">4</span><span class="emoji-pic">🍀🍀🍀</span></div>
+            <div class="num-card card" onclick="speakText('Five')"><span class="letter-text">5</span><span class="emoji-pic">🍬🍬🍬</span></div>
+            <div class="num-card card" onclick="speakText('Six')"><span class="letter-text">6</span><span class="emoji-pic">🍎🍎🍎</span></div>
+            <div class="num-card card" onclick="speakText('Seven')"><span class="letter-text">7</span><span class="emoji-pic">🌟🌟🌟</span></div>
+            <div class="num-card card" onclick="speakText('Eight')"><span class="letter-text">8</span><span class="emoji-pic">⚽⚽⚽</span></div>
+            <div class="num-card card" onclick="speakText('Nine')"><span class="letter-text">9</span><span class="emoji-pic">🦋🦋🦋</span></div>
+            <div class="num-card card" onclick="speakText('Ten')"><span class="letter-text">10</span><span class="emoji-pic">🎉🎉🎉</span></div>
         </div>
     </div>
 
@@ -108,5 +107,5 @@
         <div class="color-palette">
             <div class="color-box active" style="background: #ff7675;" onclick="changeColor('#ff7675', this)"></div>
             <div class="color-box" style="background: #74b9ff;" onclick="changeColor('#74b9ff', this)"></div>
-
+            <div class="color-box" style="background: #55efc4;" onclick="changeColor('#55efc4', this)"></div>
             

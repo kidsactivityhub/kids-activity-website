@@ -1,222 +1,193 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Kids Activity Hub</title>
-
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #fff8e7;
-  color: #333;
-}
-
-header {
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-  text-align: center;
-  padding: 30px 15px;
-}
-
-header h1 {
-  margin: 0;
-  font-size: 34px;
-}
-
-header p {
-  font-size: 18px;
-}
-
-.container {
-  max-width: 900px;
-  margin: auto;
-  padding: 25px 15px;
-}
-
-h2 {
-  text-align: center;
-  color: #ff6b6b;
-}
-
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
-}
-
-.card {
-  background: white;
-  border-radius: 20px;
-  padding: 25px;
-  text-align: center;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.emoji {
-  font-size: 50px;
-}
-
-.card h3 {
-  margin: 12px 0;
-}
-
-button {
-  border: none;
-  border-radius: 25px;
-  padding: 12px 22px;
-  margin: 5px;
-  background: #ff6b6b;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-button:hover {
-  opacity: 0.85;
-}
-
-#game {
-  margin-top: 25px;
-  text-align: center;
-  background: #e8f5ff;
-  padding: 25px;
-  border-radius: 20px;
-  display: none;
-}
-
-#result {
-  font-size: 20px;
-  font-weight: bold;
-}
-
-footer {
-  text-align: center;
-  padding: 25px;
-  margin-top: 30px;
-  background: #333;
-  color: white;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kids Activity Hub</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #fff8e7;
+            color: #333;
+        }
+        header {
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            text-align: center;
+            padding: 30px 15px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 34px;
+        }
+        header p {
+            margin: 5px 0 0;
+            font-size: 18px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 25px 15px;
+        }
+        h2 {
+            text-align: center;
+            color: #ff6b6b;
+        }
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .emoji {
+            font-size: 50px;
+        }
+        .card h3 {
+            margin: 12px 0;
+        }
+        button {
+            border: none;
+            border-radius: 25px;
+            padding: 12px 22px;
+            margin: 5px;
+            background: #ff6b6b;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            opacity: 0.85;
+        }
+        #game {
+            margin-top: 25px;
+            text-align: center;
+            background: #e8f5ff;
+            border-radius: 20px;
+            padding: 25px;
+            display: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        #result {
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 15px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #ff9a9e;
+            color: white;
+            margin-top: 40px;
+        }
+    </style>
 </head>
-
 <body>
 
-<header>
-  <h1>🌈 Kids Activity Hub</h1>
-  <p>Learn • Play • Explore • Have Fun!</p>
-</header>
+    <header>
+        <h1>🌈 Kids Activity Hub</h1>
+        <p>Learn • Play • Explore • Have Fun!</p>
+    </header>
 
-<div class="container">
+    <div class="container">
+        <h2>🎮 Fun Learning Activities</h2>
+        
+        <div class="cards">
+            <div class="card">
+                <div class="emoji">🔤</div>
+                <h3>ABC Learning</h3>
+                <p>Learn letters and simple words.</p>
+                <button onclick="showGame('abc')">Play</button>
+            </div>
 
-<h2>🎮 Fun Learning Activities</h2>
+            <div class="card">
+                <div class="emoji">🔢</div>
+                <h3>Number Game</h3>
+                <p>Practice numbers with a fun quiz.</p>
+                <button onclick="showGame('number')">Play</button>
+            </div>
 
-<div class="cards">
+            <div class="card">
+                <div class="emoji">🧩</div>
+                <h3>Puzzle Time</h3>
+                <p>Use your brain and solve puzzles.</p>
+                <button onclick="showGame('puzzle')">Play</button>
+            </div>
 
-<div class="card">
-  <div class="emoji">🔤</div>
-  <h3>ABC Learning</h3>
-  <p>Learn letters and simple words.</p>
-  <a href="#game">Play</a>
-</div>
+            <div class="card">
+                <div class="emoji">🎨</div>
+                <h3>Creative Activity</h3>
+                <p>Explore fun and creative activities.</p>
+                <button onclick="showGame('creative')">Play</button>
+            </div>
+        </div>
 
-<div class="card">
-  <div class="emoji">🔢</div>
-  <h3>Number Game</h3>
-  <p>Practice numbers with a fun quiz.</p>
-  <button onclick="showGame('number')">Play</button>
-</div>
+        <div id="game"></div>
+    </div>
 
-<div class="card">
-  <div class="emoji">🧩</div>
-  <h3>Puzzle Time</h3>
-  <p>Use your brain and solve puzzles.</p>
-  <button onclick="showGame('puzzle')">Play</button>
-</div>
+    <footer>
+        ⭐ Kids Activity Hub - Learn & Have Fun ⭐
+    </footer>
 
-<div class="card">
-  <div class="emoji">🎨</div>
-  <h3>Creative Activity</h3>
-  <p>Explore fun and creative activities.</p>
-  <button onclick="showGame('creative')">Play</button>
-</div>
+    <script>
+    function showGame(type) {
+        const game = document.getElementById("game");
+        game.style.display = "block";
 
-</div>
+        if (type === "abc") {
+            game.innerHTML = `
+                <h2>📖 ABC Quiz</h2>
+                <p>Which letter comes after A?</p>
+                <button onclick="answer(true)">B</button>
+                <button onclick="answer(false)">C</button>
+                <p id="result"></p>
+            `;
+        } 
+        else if (type === "number") {
+            game.innerHTML = `
+                <h2>🔢 Number Quiz</h2>
+                <p>What comes after 5?</p>
+                <button onclick="answer(true)">6</button>
+                <button onclick="answer(false)">8</button>
+                <p id="result"></p>
+            `;
+        } 
+        else if (type === "puzzle") {
+            game.innerHTML = `
+                <h2>🧩 Puzzle</h2>
+                <p>I have four legs but I cannot walk. What am I?</p>
+                <button onclick="answer(true)">Table</button>
+                <button onclick="answer(false)">Dog</button>
+                <p id="result"></p>
+            `;
+        } 
+        else if (type === "creative") {
+            game.innerHTML = `
+                <h2>🎨 Creative Activity</h2>
+                <p>Draw your favourite animal on paper and colour it! 🖌️</p>
+                <p>⭐ Great job! Keep creating!</p>
+            `;
+        }
+        
+        const result = document.getElementById("result");
+        if(result) result.innerHTML = "";
+    }
 
-<div id="game">
-  <h2>🔤 ABC Quiz</h2>
-  <p>Which letter comes after A?</p>
-  <button>B</button>
-  <button>C</button>
-  <p>🎉 Great job! Keep learning!</p>
-</div>
-
-</div>
-
-<footer>
-  🌟 Kids Activity Hub — Learn & Have Fun 🌟
-</footer>
-
-<script>
-
-function showGame(type) {
-
-  const game = document.getElementById("game");
-
-  game.style.display = "block";
-
-  if (type === "abc") {
-    game.innerHTML = `
-      <h2>🔤 ABC Quiz</h2>
-      <p>Which letter comes after A?</p>
-      <button onclick="answer(true)">B</button>
-      <button onclick="answer(false)">C</button>
-      <p id="result"></p>
-    `;
-  }
-
-  else if (type === "number") {
-    game.innerHTML = `
-      <h2>🔢 Number Quiz</h2>
-      <p>What comes after 5?</p>
-      <button onclick="answer(true)">6</button>
-      <button onclick="answer(false)">8</button>
-      <p id="result"></p>
-    `;
-  }
-
-  else if (type === "puzzle") {
-    game.innerHTML = `
-      <h2>🧩 Puzzle</h2>
-      <p>I have four legs but I cannot walk. What am I?</p>
-      <button onclick="answer(true)">Table</button>
-      <button onclick="answer(false)">Dog</button>
-      <p id="result"></p>
-    `;
-  }
-
-  else if (type === "creative") {
-    game.innerHTML = `
-      <h2>🎨 Creative Activity</h2>
-      <p>Draw your favourite animal on paper and colour it! 🖍️</p>
-      <p>⭐ Great job! Keep creating!</p>
-    `;
-  }
-}
-
-function answer(correct) {
-
-  const result = document.getElementById("result");
-
-  if (correct) {
-    result.innerHTML = "🎉 Correct! Great job!";
-  } else {
-    result.innerHTML = "😊 Try again!";
-  }
-}
-
-</script>
+    function answer(correct) {
+        const result = document.getElementById("result");
+        if (correct) {
+            result.innerHTML = "🎉 Correct! Great job!";
+        } else {
+            result.innerHTML = "😔 Try again!";
+        }
+    }
+    </script>
 
 </body>
 </html>

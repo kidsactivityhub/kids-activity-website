@@ -1,193 +1,271 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kids Activity Hub</title>
+    <title>Kids Digital Activity Book</title>
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #fff8e7;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: #fffdf6;
             color: #333;
         }
         header {
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
             text-align: center;
-            padding: 30px 15px;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 34px;
-        }
-        header p {
-            margin: 5px 0 0;
-            font-size: 18px;
-        }
-        .container {
-            max-width: 900px;
-            margin: auto;
             padding: 25px 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
-        h2 {
-            text-align: center;
-            color: #ff6b6b;
+        header h1 { margin: 0; font-size: 32px; color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.15); }
+        header p { margin: 5px 0 0; font-size: 16px; color: #fff; }
+        .container { max-width: 800px; margin: auto; padding: 20px 15px; }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
         }
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 18px;
-        }
-        .card {
-            background: white;
+        .nav-btn {
+            border: none;
             border-radius: 20px;
-            padding: 25px;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.2s;
+        }
+        .nav-btn:active { transform: scale(0.95); }
+        .btn-color { background: #ff6b6b; }
+        .btn-poem { background: #4dadf7; }
+        
+        .section {
+            background: white;
+            border-radius: 25px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            display: none;
         }
-        .emoji {
-            font-size: 50px;
+        .active-section { display: block; }
+        
+        /* कलरिंग पेज स्टाइल */
+        .color-palette { margin: 15px 0; }
+        .color-box {
+            display: inline-block;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
-        .card h3 {
-            margin: 12px 0;
+        canvas {
+            border: 2px dashed #ff9a9e;
+            border-radius: 15px;
+            background: #ffffff;
+            cursor: crosshair;
+            max-width: 100%;
         }
-        button {
+        
+        /* कविता लिस्ट बटन स्टाइल */
+        .poem-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .poem-choice-btn {
+            background: #e8f5ff;
+            color: #4dadf7;
+            border: 2px solid #4dadf7;
+            padding: 8px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .poem-choice-btn.active-poem {
+            background: #4dadf7;
+            color: white;
+        }
+        .poem-content { display: none; }
+        .active-poem-content { display: block; }
+
+        /* वीडियो स्टाइल */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            margin-top: 15px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .action-btn {
             border: none;
             border-radius: 25px;
-            padding: 12px 22px;
-            margin: 5px;
-            background: #ff6b6b;
+            padding: 10px 25px;
+            background: #51cf66;
             color: white;
             font-size: 16px;
             cursor: pointer;
-        }
-        button:hover {
-            opacity: 0.85;
-        }
-        #game {
-            margin-top: 25px;
-            text-align: center;
-            background: #e8f5ff;
-            border-radius: 20px;
-            padding: 25px;
-            display: none;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        #result {
-            font-weight: bold;
-            font-size: 18px;
             margin-top: 15px;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            background: #ff9a9e;
-            color: white;
-            margin-top: 40px;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>🌈 Kids Activity Hub</h1>
-        <p>Learn • Play • Explore • Have Fun!</p>
+        <h1>🌈 Kids Activity Book 📚</h1>
+        <p>Learn, Color, and Sing Along!</p>
     </header>
 
     <div class="container">
-        <h2>🎮 Fun Learning Activities</h2>
-        
-        <div class="cards">
-            <div class="card">
-                <div class="emoji">🔤</div>
-                <h3>ABC Learning</h3>
-                <p>Learn letters and simple words.</p>
-                <button onclick="showGame('abc')">Play</button>
-            </div>
-
-            <div class="card">
-                <div class="emoji">🔢</div>
-                <h3>Number Game</h3>
-                <p>Practice numbers with a fun quiz.</p>
-                <button onclick="showGame('number')">Play</button>
-            </div>
-
-            <div class="card">
-                <div class="emoji">🧩</div>
-                <h3>Puzzle Time</h3>
-                <p>Use your brain and solve puzzles.</p>
-                <button onclick="showGame('puzzle')">Play</button>
-            </div>
-
-            <div class="card">
-                <div class="emoji">🎨</div>
-                <h3>Creative Activity</h3>
-                <p>Explore fun and creative activities.</p>
-                <button onclick="showGame('creative')">Play</button>
-            </div>
+        <!-- मेनू बटन -->
+        <div class="nav-buttons">
+            <button class="nav-btn btn-color" onclick="switchSection('coloring-sec')">🎨 Coloring Book</button>
+            <button class="nav-btn btn-poem" onclick="switchSection('poem-sec')">🎵 Poems & Videos</button>
         </div>
 
-        <div id="game"></div>
+        <!-- 1. कलरिंग बुक सेक्शन -->
+        <div id="coloring-sec" class="section active-section">
+            <h2 style="color: #ff6b6b; margin-top: 0;">🍎 A a - Apple</h2>
+            <p>पसंदीदा रंग चुनें और अपनी उंगली से सेब में रंग भरें!</p>
+            
+            <div class="color-palette">
+                <div class="color-box" style="background: #ff4d4d;" onclick="changeColor('#ff4d4d')"></div>
+                <div class="color-box" style="background: #2b8a3e;" onclick="changeColor('#2b8a3e')"></div>
+                <div class="color-box" style="background: #4dadf7;" onclick="changeColor('#4dadf7')"></div>
+                <div class="color-box" style="background: #ffd43b;" onclick="changeColor('#ffd43b')"></div>
+                <div class="color-box" style="background: #ffa94d;" onclick="changeColor('#ffa94d')"></div>
+                <div class="color-box" style="background: #000000;" onclick="changeColor('#000000')"></div>
+            </div>
+            
+            <div>
+                <canvas id="paintCanvas" width="320" height="320"></canvas>
+            </div>
+            <button class="action-btn" onclick="clearCanvas()">Clear Page</button>
+        </div>
+
+        <!-- 2. कविता और वीडियो सेक्शन -->
+        <div id="poem-sec" class="section">
+            <h2>🎵 बच्चों की प्यारी कविताएँ</h2>
+            <p>नीचे दी गई किसी भी कविता पर क्लिक करके उसे पढ़ें और वीडियो देखें:</p>
+            
+            <!-- कविता चुनने के बटन -->
+            <div class="poem-selector">
+                <button id="btn-p1" class="poem-choice-btn active-poem" onclick="showPoem('poem1', 'btn-p1')">⭐ ट्विंकल ट्विंकल</button>
+                <button id="btn-p2" class="poem-choice-btn" onclick="showPoem('poem2', 'btn-p2')">🌙 चंदा मामा</button>
+            </div>
+
+            <!-- कविता 1 -->
+            <div id="poem1" class="poem-content active-poem-content">
+                <p style="font-size: 18px; line-height: 1.6; color: #555;">
+                    ट्विंकल ट्विंकल लिटिल变ar,<br>
+                    हाउ आई वंडर व्हाट यू आर।<br>
+                    अप अबव द वर्ल्ड सो हाई,<br>
+                    लाइक ए डायमंड इन द स्काई। ⭐
+                </p>
+                <div class="video-container">
+                    <iframe src="https://youtube.com" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+
+            <!-- कविता 2 -->
+            <div id="poem2" class="poem-content">
+                <p style="font-size: 18px; line-height: 1.6; color: #555;">
+                    चंदा मामा दूर के, पुए पकाएं बूर के।<br>
+                    आप खाएं थाली में, मुन्ने को दें प्याली में।<br>
+                    प्याली गई टूट, मुन्ना गया रूठ!<br>
+                    लाएंगे नई प्यालियां, बजा बजा के तालियां! 🌙
+                </p>
+                <div class="video-container">
+                    <iframe src="https://youtube.com" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <footer>
-        ⭐ Kids Activity Hub - Learn & Have Fun ⭐
-    </footer>
-
     <script>
-    function showGame(type) {
-        const game = document.getElementById("game");
-        game.style.display = "block";
+        let selectedColor = '#ff4d4d';
+        let canvas, ctx;
 
-        if (type === "abc") {
-            game.innerHTML = `
-                <h2>📖 ABC Quiz</h2>
-                <p>Which letter comes after A?</p>
-                <button onclick="answer(true)">B</button>
-                <button onclick="answer(false)">C</button>
-                <p id="result"></p>
-            `;
-        } 
-        else if (type === "number") {
-            game.innerHTML = `
-                <h2>🔢 Number Quiz</h2>
-                <p>What comes after 5?</p>
-                <button onclick="answer(true)">6</button>
-                <button onclick="answer(false)">8</button>
-                <p id="result"></p>
-            `;
-        } 
-        else if (type === "puzzle") {
-            game.innerHTML = `
-                <h2>🧩 Puzzle</h2>
-                <p>I have four legs but I cannot walk. What am I?</p>
-                <button onclick="answer(true)">Table</button>
-                <button onclick="answer(false)">Dog</button>
-                <p id="result"></p>
-            `;
-        } 
-        else if (type === "creative") {
-            game.innerHTML = `
-                <h2>🎨 Creative Activity</h2>
-                <p>Draw your favourite animal on paper and colour it! 🖌️</p>
-                <p>⭐ Great job! Keep creating!</p>
-            `;
+        function switchSection(sectionId) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active-section'));
+            document.getElementById(sectionId).classList.add('active-section');
+            if (sectionId === 'coloring-sec') {
+                setupCanvas();
+            }
         }
+
+        function showPoem(poemId, btnId) {
+            document.querySelectorAll('.poem-content').forEach(p => p.classList.remove('active-poem-content'));
+            document.querySelectorAll('.poem-choice-btn').forEach(b => b.classList.remove('active-poem'));
+            
+            document.getElementById(poemId).classList.add('active-poem-content');
+            document.getElementById(btnId).classList.add('active-poem');
+        }
+
+        function changeColor(color) { selectedColor = color; }
+
+        function setupCanvas() {
+            canvas = document.getElementById('paintCanvas');
+            if (!canvas) return;
+            ctx = canvas.getContext('2d');
+            let painting = false;
+
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = '#333';
+            
+            // सेब का चित्र
+            ctx.beginPath();
+            ctx.moveTo(160, 95);
+            ctx.bezierCurveTo(130, 75, 70, 75, 70, 145);
+            ctx.bezierCurveTo(70, 215, 120, 275, 160, 275);
+            ctx.bezierCurveTo(200, 275, 250, 215, 250, 145);
+            ctx.bezierCurveTo(250, 75, 190, 75, 160, 95);
+            
+            // पत्ती
+            ctx.moveTo(160, 95);
+            ctx.bezierCurveTo(170, 65, 200, 55, 210, 65);
+            ctx.bezierCurveTo(200, 85, 175, 90, 160, 95);
+            
+            // डंडी
+            ctx.moveTo(160, 95);
+            ctx.quadraticCurveTo(155, 70, 165, 55);
+            ctx.stroke();
+
+            function startPosition(e) { painting = true; draw(e); }
+            function finishedPosition() { painting = false; ctx.beginPath(); }
+
+            function draw(e) {
+                if (!painting) return;
+                ctx.lineWidth = 14;
+                ctx.lineCap = 'round';
+                ctx.strokeStyle = selectedColor;
+
+                const rect = canvas.getBoundingClientRect();
+                const clientX = e.touches ? e.touches.clientX : e.clientX;
+                const clientY = e.touches ? e.touches.clientY : e.clientY;
+
+                ctx.lineTo(clientX - rect.left, clientY - rect.top);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(clientX - rect.left, clientY - rect.top);
+            }
+
+            canvas.addEventListener('mousedown', startPosition);
+            canvas.addEventListener('mouseup', finishedPosition);
         
-        const result = document.getElementById("result");
-        if(result) result.innerHTML = "";
-    }
-
-    function answer(correct) {
-        const result = document.getElementById("result");
-        if (correct) {
-            result.innerHTML = "🎉 Correct! Great job!";
-        } else {
-            result.innerHTML = "😔 Try again!";
-        }
-    }
-    </script>
-
-</body>
-</html>

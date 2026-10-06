@@ -3,109 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kids Activity Hub - MagicPebbles</title>
+    <title>Magic Pebbles - Ultimate Kids App</title>
     <style>
-        body { font-family: 'Arial', sans-serif; background-color: #ffeef8; margin: 0; padding: 0; text-align: center; color: #333; -webkit-user-select: none; user-select: none; }
-        header { background: linear-gradient(135deg, #ff6b6b, #ff8e53); color: white; padding: 20px; font-size: 24px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; }
+        body {
+            margin: 0; padding: 0;
+            background-color: #f7f9fc;
+            font-family: 'Arial', sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; overflow: hidden;
+        }
+        .app-container {
+            width: 100%; max-width: 480px; height: 95vh;
+            background: #ffffff; border-radius: 30px;
+            box-shadow: 0px 15px 35px rgba(0,0,0,0.15);
+            position: relative; overflow: hidden;
+            display: flex; flex-direction: column;
+        }
+        .header {
+            background: #ff7ebb; color: white; text-align: center;
+            padding: 15px; font-size: 22px; font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .book-slider {
+            flex: 1; display: flex; position: relative; overflow: hidden;
+        }
+        .page {
+            width: 100%; height: 100%; position: absolute; top: 0; left: 100%;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s;
+            opacity: 0; padding: 25px; box-sizing: border-box;
+            background: #fff; display: flex; flex-direction: column; align-items: center;
+            overflow-y: auto;
+        }
+        .page.active { left: 0; opacity: 1; transform: rotateY(0deg); }
+        .page.past { left: -100%; opacity: 0; }
         
-        .app-banner { background: #6c5ce7; color: white; padding: 15px; margin: 15px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        .download-btn { background: #fdcb6e; color: #2d3436; padding: 10px 25px; border: none; font-size: 18px; font-weight: bold; border-radius: 25px; cursor: pointer; text-decoration: none; display: inline-block; margin-top: 10px; }
+        /* ग्रिड और बटन डिजाइन */
+        .grid-layout {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 100%; margin-top: 15px;
+        }
+        .interactive-card {
+            background: #e3f2fd; border-radius: 20px; padding: 25px 10px;
+            text-align: center; font-size: 26px; font-weight: bold; color: #1e88e5;
+            cursor: pointer; border: 2px solid #bbdefb;
+            box-shadow: 0 6px 0 #90caf9; transition: all 0.1s ease;
+        }
+        .interactive-card:active {
+            transform: translateY(6px); box-shadow: 0 0px 0 #90caf9;
+        }
+        .card-subtext { font-size: 14px; color: #555; display: block; margin-top: 5px; }
 
-        .section { background: white; margin: 20px; padding: 20px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        h2 { color: #ff6b6b; border-bottom: 3px dashed #ff8e53; padding-bottom: 5px; display: inline-block; }
+        /* वीडियो सेक्शन */
+        .video-box {
+            width: 100%; background: #fff0f6; border: 2px dashed #ff7ebb;
+            border-radius: 20px; padding: 15px; margin-bottom: 20px; box-sizing: border-box;
+        }
+        .video-title { font-size: 18px; font-weight: bold; color: #d63384; margin-bottom: 10px; }
         
-        .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 15px; }
-        
-        .card { width: 85px; height: 110px; background: #a29bfe; color: white; border-radius: 12px; border-bottom: 5px solid #6c5ce7; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.1s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .card:active { transform: scale(0.9); }
-        .card .letter-text { font-size: 30px; font-weight: bold; }
-        .card .emoji-pic { font-size: 26px; margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 80px; }
-        
-        .num-card { background: #fab1a0; border-bottom: 5px solid #e17055; width: 95px; height: 120px; }
+        /* कलर पैलेट */
+        .color-selector { display: flex; gap: 15px; margin-top: 20px; }
+        .color-btn {
+            width: 45px; height: 45px; border-radius: 50%; cursor: pointer;
+            border: 4px solid white; box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
 
-        /* Coloring Styling */
-        .color-palette { margin: 15px 0; display: flex; justify-content: center; gap: 12px; }
-        .color-box { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; border: 3px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        .color-box.active { border: 3px solid #333; transform: scale(1.1); }
-        canvas { background: #fff; border: 3px solid #ff7675; border-radius: 15px; cursor: crosshair; touch-action: none; box-shadow: inset 0 0 10px rgba(0,0,0,0.05); }
-        .clear-btn { background: #ff7675; color: white; padding: 10px 22px; border: none; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 3px 5px rgba(0,0,0,0.1); }
-        
-        /* Fixed Video Container Placement */
-        .video-section { margin-top: 30px; padding-top: 10px; }
-        .play-btn { background: #00b894; color: white; padding: 14px 35px; font-size: 18px; font-weight: bold; border: none; border-radius: 35px; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        /* यूजर के खुद के बनाए पेजेस (इमेज) का स्टाइल */
+        .custom-page-img {
+            width: 100%; max-height: 60%; object-fit: contain; border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 15px;
+        }
+
+        /* नीचे के बटन */
+        .nav-controls {
+            display: flex; justify-content: space-between; padding: 15px 25px;
+            background: #f8f9fa; border-top: 1px solid #eee;
+        }
+        .nav-btn {
+            background: #4caf50; color: white; border: none; padding: 12px 25px;
+            border-radius: 50px; font-size: 16px; font-weight: bold; cursor: pointer;
+            box-shadow: 0 4px 0 #388e3c;
+        }
+        .nav-btn:active { transform: translateY(4px); box-shadow: 0 0 0; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Welcome to Kids Activity Hub! 🎈</h1>
-    </header>
-
-    <!-- App Launch Section -->
-    <div class="app-banner">
-        <h3>🎉 खुशख़बरी! हमारा नया एंड्रॉइड ऐप आ गया है! 🎉</h3>
-        <p>बिना इंटरनेट बच्चों की कविताएँ, आवाज़ और कलरिंग बुक चलाने के लिए अभी डाउनलोड करें.</p>
-        <a href="#" class="download-btn" onclick="initAudio(); alert('MagicPebbles App फ़ाइल जल्द ही यहाँ लोड होगी!')">📲 डाउनलोड करें "MagicPebbles" ऐप (FREE)</a>
+<div class="app-container">
+    <div class="header" id="app-title">Magic Pebbles</div>
+    
+    <div class="book-slider" id="book-slider">
+        <!-- पेजेस यहाँ आटोमेटिक जनरेट होंगे -->
     </div>
 
-    <!-- Letters Section (A to Z) -->
-    <div class="section" onclick="initAudio()">
-        <h2>🔤 Letters (A to Z)</h2>
-        <p style="color: #666; font-size: 14px; font-weight: bold;">(अक्षर छुओ, आवाज़ सुनो और नीचे आउटलाइन में रंग भरो! 🔊🖌️)</p>
-        <div class="grid">
-            <div class="card" onclick="selectLetter('A', 'Apple 🍎')"><span class="letter-text">A</span><span class="emoji-pic">🍎</span></div>
-            <div class="card" onclick="selectLetter('B', 'Ball ⚽')"><span class="letter-text">B</span><span class="emoji-pic">⚽</span></div>
-            <div class="card" onclick="selectLetter('C', 'Cat 🐱')"><span class="letter-text">C</span><span class="emoji-pic">🐱</span></div>
-            <div class="card" onclick="selectLetter('D', 'Dog 🐶')"><span class="letter-text">D</span><span class="emoji-pic">🐶</span></div>
-            <div class="card" onclick="selectLetter('E', 'Elephant 🐘')"><span class="letter-text">E</span><span class="emoji-pic">🐘</span></div>
-            <div class="card" onclick="selectLetter('F', 'Fish 🐟')"><span class="letter-text">F</span><span class="emoji-pic">🐟</span></div>
-            <div class="card" onclick="selectLetter('G', 'Grapes 🍇')"><span class="letter-text">G</span><span class="emoji-pic">🍇</span></div>
-            <div class="card" onclick="selectLetter('H', 'Horse 🐴')"><span class="letter-text">H</span><span class="emoji-pic">🐴</span></div>
-            <div class="card" onclick="selectLetter('I', 'IceCream 🍦')"><span class="letter-text">I</span><span class="emoji-pic">🍦</span></div>
-            <div class="card" onclick="selectLetter('J', 'Jug 🏺')"><span class="letter-text">J</span><span class="emoji-pic">🏺</span></div>
-            <div class="card" onclick="selectLetter('K', 'Kite 🪁')"><span class="letter-text">K</span><span class="emoji-pic">🪁</span></div>
-            <div class="card" onclick="selectLetter('L', 'Lion 🦁')"><span class="letter-text">L</span><span class="emoji-pic">🦁</span></div>
-            <div class="card" onclick="selectLetter('M', 'Monkey 🐒')"><span class="letter-text">M</span><span class="emoji-pic">🐒</span></div>
-            <div class="card" onclick="selectLetter('N', 'Nest 🪹')"><span class="letter-text">N</span><span class="emoji-pic">🪹</span></div>
-            <div class="card" onclick="selectLetter('O', 'Orange 🍊')"><span class="letter-text">O</span><span class="emoji-pic">🍊</span></div>
-            <div class="card" onclick="selectLetter('P', 'Parrot 🦜')"><span class="letter-text">P</span><span class="emoji-pic">🦜</span></div>
-            <div class="card" onclick="selectLetter('Q', 'Queen 👑')"><span class="letter-text">Q</span><span class="emoji-pic">👑</span></div>
-            <div class="card" onclick="selectLetter('R', 'Rose 🌹')"><span class="letter-text">R</span><span class="emoji-pic">🌹</span></div>
-            <div class="card" onclick="selectLetter('S', 'Sun ☀️')"><span class="letter-text">S</span><span class="emoji-pic">☀️</span></div>
-            <div class="card" onclick="selectLetter('T', 'Tiger 🐯')"><span class="letter-text">T</span><span class="emoji-pic">🐯</span></div>
-            <div class="card" onclick="selectLetter('U', 'Umbrella ☂️')"><span class="letter-text">U</span><span class="emoji-pic">☂️</span></div>
-            <div class="card" onclick="selectLetter('V', 'Van 🚐')"><span class="letter-text">V</span><span class="emoji-pic">🚐</span></div>
-            <div class="card" onclick="selectLetter('W', 'Watch ⌚')"><span class="letter-text">W</span><span class="emoji-pic">⌚</span></div>
-            <div class="card" onclick="selectLetter('X', 'Xylophone 🎹')"><span class="letter-text">X</span><span class="emoji-pic">🎹</span></div>
-            <div class="card" onclick="selectLetter('Y', 'Yak 🐂')"><span class="letter-text">Y</span><span class="emoji-pic">🐂</span></div>
-            <div class="card" onclick="selectLetter('Z', 'Zebra 🦓')"><span class="letter-text">Z</span><span class="emoji-pic">🦓</span></div>
-        </div>
+    <div class="nav-controls">
+        <button class="nav-btn" style="background:#ff9800; box-shadow: 0 4px 0 #f57c00;" onclick="goPrev()">◀ पीछे</button>
+        <button class="nav-btn" onclick="goNext()">आगे ▶</button>
     </div>
+</div>
 
-    <!-- Numbers Section (1 to 10) -->
-    <div class="section" onclick="initAudio()">
-        <h2>🔢 Numbers (1 to 10)</h2>
-        <div class="grid">
-            <div class="num-card card" onclick="speakText('One')"><span class="letter-text">1</span><span class="emoji-pic">🎈</span></div>
-            <div class="num-card card" onclick="speakText('Two')"><span class="letter-text">2</span><span class="emoji-pic">🎈🎈</span></div>
-            <div class="num-card card" onclick="speakText('Three')"><span class="letter-text">3</span><span class="emoji-pic">⭐⭐⭐</span></div>
-            <div class="num-card card" onclick="speakText('Four')"><span class="letter-text">4</span><span class="emoji-pic">🍀🍀🍀</span></div>
-            <div class="num-card card" onclick="speakText('Five')"><span class="letter-text">5</span><span class="emoji-pic">🍬🍬🍬</span></div>
-            <div class="num-card card" onclick="speakText('Six')"><span class="letter-text">6</span><span class="emoji-pic">🍎🍎🍎</span></div>
-            <div class="num-card card" onclick="speakText('Seven')"><span class="letter-text">7</span><span class="emoji-pic">🌟🌟🌟</span></div>
-            <div class="num-card card" onclick="speakText('Eight')"><span class="letter-text">8</span><span class="emoji-pic">⚽⚽⚽</span></div>
-            <div class="num-card card" onclick="speakText('Nine')"><span class="letter-text">9</span><span class="emoji-pic">🦋🦋🦋</span></div>
-            <div class="num-card card" onclick="speakText('Ten')"><span class="letter-text">10</span><span class="emoji-pic">🎉🎉🎉</span></div>
-        </div>
-    </div>
-
-    <!-- Outlined Coloring Sheet Section -->
-    <div class="section">
-        <h2>🎨 Magic Outline Coloring Book (A to Z)</h2>
-        <h3 id="currentOutlineTitle" style="color: #6c5ce7; font-size: 22px;">🍎 Apple Outline (A)</h3>
+<script>
+    // ==========================================
+    // संजना जी, आप यहाँ अपने खुद के पेजेस की जानकारी बदल सकती हैं:
+    // ==========================================
+    const appData = {
+        // 1. A to Z पेजेस: यहाँ आप अपनी बनाई इमेज का लिंक (imageUrl) भी डाल सकती हैं
+        letters: [
+            { char: "A", text: "A for Apple", img: "https://placehold.co" },
+            { char: "B", text: "B for Ball", img: "https://placehold.co" },
+            { char: "C", text: "C for Cat", img: "https://placehold.co" }
+            // आप इसी तरह Z तक आसानी से नाम और इमेज बदल सकती हैं...
+        ],
         
-        <div class="color-palette">
-            <div class="color-box active" style="background: #ff7675;" onclick="changeColor('#ff7675', this)"></div>
-            <div class="color-box" style="background: #74b9ff;" onclick="changeColor('#74b9ff', this)"></div>
-            <div class="color-box" style="background: #55efc4;" onclick="changeColor('#55efc4', this)"></div>
-            
+        // 2. Numbers पेजेस (1 से 10)
+        numbers: [
+            { num: "1", text: "One Elephant" },
+            { num: "2", text: "Two Balloons" },
+            { num: "3", text: "Three Stars" }
+            // आप 10 तक जितने चाहें जोड़ सकती हैं...
+        ],
+
+        // 3. कविताएँ और उनके 3-4 वीडियो लिंक्स (यहाँ अपने YouTube/Flow लिंक बदलें)
+        poems: [
+            { title: "मछली जल की रानी है", url: "https://youtube.com" },
+            { title: "चंदा मामा दूर के", url: "https://youtube.com" },
+            { title: "ट्विंकल ट्विंकल लिटिल स्टार", url: "https://youtube.com" }
+        ]
+    };
+
+    let activePageIndex = 0;
+    const slider = document.getElementById('book-slider');
+
+    function buildBook() {
+        slider.innerHTML = '';
+        let totalPages = [];
+
+        // A-Z पेजेस बनाना (कलरिंग और वॉयस के साथ)
+        appData.letters.forEach(item => {
+            totalPages.push(`
+                <div class="page">
+                    <h2 style="color:#ff7ebb;">Activity & Learning</h2>
+                    <img class="custom-page-img" id="img-${item.char}" src="${item.img}" alt="${item.char}">
+                    <div class="interactive-card" style="width:80%;" onclick="triggerVoice('${item.text}')">
+                        ${item.char}
+                        <span class="card-subtext">छूकर आवाज़ सुनो 🔊</span>
+                    </div>
+                    <div class="color-selector">
+                        <div class="color-btn" style="background: #ff5252;" onclick="paintPage('img-${item.char}', '#ff5252')"></div>
+                        <div class="color-btn" style="background: #448aff;" onclick="paintPage('img-${item.char}', '#448aff')"></div>
+                        <div class="color-btn" style="background: #69f0ae;" onclick="paintPage('img-${item.char}', '#69f0ae')"></div>
+                    </div>
+                </div>
+            `);
+        });
+
+        // Numbers पेजेस बनाना
+        let numberHtml = `<div class="page"><h2>Numbers Learning</h2><div class="grid-layout">`;
+        appData.numbers.forEach(item => {
+            numberHtml += `
+                <div class="interactive-card" onclick="triggerVoice('${item.text}')">
+                    ${item.num}
+                    <span class="card-subtext">${item.num}</span>
+                </div>`;
+        });
+        numberHtml += `</div></div>`;
+        totalPages.push(numberHtml);
+
+        // पोएट्री वीडियो पेजेस बनाना
+        let poetryHtml = `<div class="page"><h2>बाल कविताएं (Poetry Videos)</h2>`;
+        appData.poems.forEach(poem => {
+            poetryHtml += `
+                <div class="video-box">
+                    <div class="video-title">🎬 ${poem.title}</div>
+                    <iframe width="100%" height="180" src="${poem.url}" frameborder="0" allowfullscreen style="border-radius:10px;"></iframe>
+                </div>`;
+        });
+        poetryHtml += `</div>`;
+        totalPages.push(poetryHtml);
+
+        // सभी को स्लाइडर में जोड़ना
+        slider.innerHTML = totalPages.join('');
+        showPage(activePageIndex);
+    }
+
+    // आवाज़ निकालने का ऑटोमैटिक सिस्टम
+    function triggerVoice(phrase) {
+        window.speechSynthesis.cancel();
+        let speakObj = new SpeechSynthesisUtterance(phrase);
+        speakObj.lang = 'en-US';
+        speakObj.rate = 0.85;
+        window.speechSynthesis.speak(speakObj);
+    }
+
+    // कलर बदलने का फंक्शन
+    function paintPage(elementId, hexColor) {
+        document.getElementById(elementId).style.backgroundColor = hexColor;
+        triggerVoice("Wow, nice color choice!");
+    }
+
+    // पेज नेविगेशन
+    function showPage(index) {
+        const pages = document.querySelectorAll('.page');
+        pages.forEach((page, idx) => {
+            page.className = 'page';
+            if (idx === index) page.classList.add('active');
+            else if (idx < index) page.classList.add('past');
+        });
+    }
+
+    function goNext() {
+        const total = document.querySelectorAll('.page').length;
+        if (activePageIndex < total - 1) {
+            activePageIndex++;
+            showPage(activePageIndex);
+        }
+    }
+
+    function goPrev() {
+        if (activePageIndex > 0) {
+            activePageIndex--;
+            showPage(activePageIndex);
+        }
+    }
+
+    // ऐप लोड करें
+    buildBook();
+</script>
+
+</body>
+</html>
